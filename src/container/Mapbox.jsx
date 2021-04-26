@@ -111,31 +111,31 @@ export default function Mapbox() {
         source: 'line',
         id: 'line',
         paint: {
-        'line-color': 'red',
-        'line-width': 4,
-        // 'line-gradient' must be specified using an expression
-        // with the special 'line-progress' property
-        'line-gradient': [
-        'interpolate',
-        ['linear'],
-        ['line-progress'],
-        0,
-        'blue',
-        0.1,
-        'royalblue',
-        0.3,
-        'cyan',
-        0.5,
-        'lime',
-        0.7,
-        'yellow',
-        1,
-        'red'
-        ]
+          'line-color': 'red',
+          'line-width': 4,
+          // 'line-gradient' must be specified using an expression
+          // with the special 'line-progress' property
+          'line-gradient': [
+          'interpolate',
+          ['linear'],
+          ['line-progress'],
+          0,
+          'blue',
+          0.1,
+          'royalblue',
+          0.3,
+          'cyan',
+          0.5,
+          'lime',
+          0.7,
+          'yellow',
+          1,
+          'red'
+          ]
         },
         layout: {
-        'line-cap': 'round',
-        'line-join': 'round'
+          'line-cap': 'round',
+          'line-join': 'round'
         }
       });
   }
@@ -170,7 +170,7 @@ export default function Mapbox() {
       }
     });
   }
-  return <div id="map" style={{width:'1000px',height:'700px'}}>
+  return <div id="map" style={{width:'100%',height:'100%'}}>
     
   </div>
 }
