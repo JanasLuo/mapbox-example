@@ -1,7 +1,7 @@
 /*
  * @Date: 2021-04-23 10:10:35
  * @LastEditors: mark
- * @LastEditTime: 2021-04-23 14:34:45
+ * @LastEditTime: 2021-04-27 10:33:20
  * @Description: Do not edit
  */
 import { defineConfig } from 'vite'
@@ -49,7 +49,7 @@ export default defineConfig({
         rewrite: path => path.replace(/^\/api/, '') // 将 /api 重写为空
       },
       '/darkblue_whhb': {
-        target: 'http://192.168.0.108:8080/darkblue_whhb',
+        target: 'http://127.0.0.1:8080/darkblue_whhb',
         changeOrigin: true,
         rewrite: path => path.replace(/^\/darkblue_whhb/, '') // 将 /api 重写为空
       }
