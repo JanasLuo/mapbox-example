@@ -3,6 +3,8 @@ import mapboxgl from 'mapbox-gl';
 import * as ReactDOM from 'react-dom'
 import 'mapbox-gl/dist/mapbox-gl.css' // 必须使用 不然会有问题 比如marker位置不正确
 import { mockRoad , mockPolygon } from './mock'
+import {Button} from 'antd'
+import './mapbox.less'
 export default function Mapbox() {
   const mapRef = useRef()
   const stateObj =  useRef({
@@ -54,16 +56,19 @@ export default function Mapbox() {
   }
   // 地图加载完
   const mapLoaded = () => {
-    // const curBounds = map.current.getBounds()
-    const mockMarker = {
-      name:'marker',
-      center: [114.298572, 30.584355],
-      num: 10
-    }
-    showPolymerization(mockMarker)
-    addRoad()
-    addPolygon()
+    // 获取屏幕四个点
+    const curBounds = map.current.getBounds()
+    console.log(curBounds,'curBounds')
+    // const mockMarker = {
+    //   name:'marker',
+    //   center: [114.298572, 30.584355],
+    //   num: 10
+    // }
+    // showPolymerization(mockMarker)
+    // addRoad()
+    // addPolygon()
   }
+
   // 显示marker
   const showPolymerization = (data) => {
       if (!data.center || data.num === 0) {
@@ -87,7 +92,7 @@ export default function Mapbox() {
       const marker = new mapboxgl.Marker(el)
         .setLngLat([lag, lat])
         .addTo(mapRef.current)
-      console.log(marker,'marker')
+      // console.log(marker,'marker')
       // 保存marker 用于删除
       stateObj.current.circleList.push(marker)
       // 点击事件
@@ -170,7 +175,60 @@ export default function Mapbox() {
       }
     });
   }
-  return <div id="map" style={{width:'100%',height:'100%'}}>
-    
+
+  // 添加剖面图图片
+  // marker，div
+  // 路径规划
+  // 热力图
+  // 蜂窝
+  // d7
+  /**
+   * @description: 删除所有图层
+   * @param {*}
+   * @return {*}
+   */  
+  const clearAll = () => {
+    // 清除撒点
+    for(const item of stateObj.current.circleList) {
+      item.remove()
+    }
+    stateObj.current.circleList = []
+  }
+  /**
+   * @description: 
+   * @param {*} type
+   * @return {*}
+   */  
+  const btnOption = (type) => {
+    switch (type) {
+      case 1:
+        const mockMarker = {
+          name:'marker',
+          center: [114.298572, 30.584355],
+          num: 10
+        }
+        showPolymerization(mockMarker)
+        break
+      case 2: 
+        addRoad()
+        break
+      case 3:
+        addPolygon()
+        break
+      case 4:
+        clearAll()
+        break
+    }
+  }
+  return <>  
+  <div id="map" style={{width:'100%',height:'100%'}}></div>
+  <div className="map-btns">
+    <Button type="primary" onClick={()=>{btnOption(1)}}>点</Button>
+    <Button type="primary" onClick={()=>{btnOption(2)}}>线</Button>
+    <Button type="primary" onClick={()=>{btnOption(3)}}>面</Button>
+    <Button type="primary" onClick={()=>{btnOption(4)}}>清除</Button>
+
   </div>
+  </>
+
 }
