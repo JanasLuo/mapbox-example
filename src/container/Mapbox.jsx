@@ -8,6 +8,10 @@ import './mapbox.less'
 import nanAnZui from '@/assets/nan-an-zui.jpg'
 import F1 from '@/assets/geo-json/f1.json' 
 import ProfileMap from '@/utils/profile_map.js'
+import SectionMap from '@/utils/sec.js'
+import trailStart from '@/assets/trail_start.svg'
+import trailEnd from '@/assets/trail_end.svg'
+
 export default function Mapbox() {
   const mapRef = useRef()
   const stateObj =  useRef({
@@ -73,6 +77,29 @@ export default function Mapbox() {
     // addPolygon()
     addFloorPic()
     addFloorData()
+    showTrajectory([{
+      smx:114.24596786499023,
+      smy:30.574676505614352,
+      eventTime:'2020-01-02'
+    },{
+      smx:114.31154251098633,
+      smy:30.551913440823267,
+      eventTime:'2020-01-03'
+    },{
+      smx:114.31154251098633,
+      smy:30.551913440823267,
+      eventTime:'2020-01-03'
+    },{
+      smx:114.28579330444335,
+      smy:30.516871540414513,
+      eventTime:'2020-01-04'
+    },
+    {
+      smx:114.22348022460938,
+      smy:30.54245189515445,
+      eventTime:'2020-01-05'
+    }
+  ])
   }
   /**
    * 添加点线面一般都是先添加资源（addSource）
@@ -235,7 +262,105 @@ export default function Mapbox() {
   }
   // 添加marker，div
   // 路径规划
-    
+      // 显示轨迹 测试
+  const showTrajectory = (data) => {
+    // console.log(data2, 'guiji')
+    // const data = JSON.parse(
+    //   JSON.stringify([
+    //     data2[0],
+    //     data2[1],
+    //     data2[1],
+    //     data2[2],
+    //     data2[3],
+    //     data2[1]
+    //   ])
+    // )
+    // 添加轨迹
+    const lineArr = data.map((item) => {
+      return item.smx + ' ' + item.smy
+    })
+    const lineStr = 'LINESTRING (' + lineArr.join(', ') + ')'
+    const lineObj = {
+      type: 'LineString',
+      geometry: lineStr
+    }
+    const secMapObj = new SectionMap(mapRef.current)
+    secMapObj.addMapLay([lineObj], undefined, 2, '')
+    // 先显示线，然后把macker显示上去
+    const obj = {}
+    let index = 1
+    for (const item of data) {
+      const newkey = item.smx + ',' + item.smy
+      item.index = index
+      if (newkey in obj) {
+        obj[newkey].push(item)
+      } else {
+        obj[newkey] = [item]
+      }
+      index++
+    }
+
+    for (const key in obj) {
+      // 判断前面有几个相同的点
+      // let j = 0 // 前面的数据
+      // let offset = 0 // 需要偏移的量
+      // while (j < i) {
+      //   if (item.points === data[j].points) {
+      //     offset++
+      //   }
+      //   j++
+      // }
+      if (key) {
+        showTrailCircle(obj[key], data.length)
+      }
+    }
+  }
+    // 显示轨迹的数字圆圈和时间
+    const showTrailCircle = (data, length) => {
+      const el = document.createElement('div')
+      // console.log(data, offset, 'number')
+      ReactDOM.render(
+        <div className="trail-circle-box">
+          <div className="position-box">
+            {data.map((item, index) => (
+              <div
+                onClick={() => {
+                  showPersonPic(item)
+                }}
+              >
+                <div className="circle">{item.index}</div>
+                <div className={index % 2 === 1 ? 'top-time time' : 'time'}>
+                  {item.eventTime}
+                </div>
+                {item.index === 1 && (
+                  <img className="trail-start" src={trailStart} />
+                )}
+                {item.index === length && (
+                  <img className="trail-start" src={trailEnd} />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>,
+        el
+      )
+  
+      const centroid = [data[0].smx - 0, data[0].smy - 0]
+  
+      el.className = 'situation-show-circle'
+  
+      el.onclick = (e) => {
+        // setCurrentXiaoQuData(data)
+        // setDetailLeft(e.clientX - 184)
+        // setDetailTop(e.clientY - 213)
+        // setVideoDetail(true)
+      }
+      const marker = new mapboxgl.Marker(el)
+        .setLngLat(centroid)
+        .addTo(mapRef.current)
+      // 保存marker 用于删除
+      // mapObj.current.TrailList.push(marker)
+    }
   // 热力图
   // 蜂窝
   // 画圆、面
