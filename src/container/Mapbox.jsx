@@ -5,6 +5,9 @@ import 'mapbox-gl/dist/mapbox-gl.css' // 必须使用 不然会有问题 比如m
 import { mockRoad , mockPolygon } from './mock'
 import {Button} from 'antd'
 import './mapbox.less'
+import nanAnZui from '@/assets/nan-an-zui.jpg'
+import F1 from '@/assets/geo-json/f1.json' 
+import ProfileMap from '@/utils/profile_map.js'
 export default function Mapbox() {
   const mapRef = useRef()
   const stateObj =  useRef({
@@ -49,6 +52,7 @@ export default function Mapbox() {
     });
     mapRef.current.on('load', () => {
       mapLoaded()
+     
     })
   }
   const destory = () => {
@@ -56,8 +60,8 @@ export default function Mapbox() {
   }
   // 地图加载完
   const mapLoaded = () => {
-    // 获取屏幕四个点
-    const curBounds = map.current.getBounds()
+    // 获取屏幕左上、右上、右下、左下四个点，可以在显示点位等数据时，传给后端，要后端只显示屏幕内等数据，减少渲染
+    const curBounds = mapRef.current.getBounds()
     console.log(curBounds,'curBounds')
     // const mockMarker = {
     //   name:'marker',
@@ -67,8 +71,13 @@ export default function Mapbox() {
     // showPolymerization(mockMarker)
     // addRoad()
     // addPolygon()
+    addFloorPic()
+    addFloorData()
   }
-
+  /**
+   * 添加点线面一般都是先添加资源（addSource）
+   * 然后再添加layer
+   */
   // 显示marker
   const showPolymerization = (data) => {
       if (!data.center || data.num === 0) {
@@ -145,6 +154,7 @@ export default function Mapbox() {
       });
   }
   // 添加面
+  /** */
   const addPolygon = () => {
     const map  = mapRef.current
     // 添加资源
@@ -175,13 +185,61 @@ export default function Mapbox() {
       }
     });
   }
+  // 添加楼层剖面图图片 图片会固定在上下左右四个点上 随地图变动
+  function addFloorPic () {
+   mapRef.current.addSource('overlay', {
+      type: 'image',
+      url: nanAnZui,
+      coordinates: [   
+          [
+            114.2847204208374,
+            30.560468693004776
+          ],
+          [
+            114.2847204208374,
+            30.56638116950817
+          ],
+          [
+            114.27738189697266,
+            30.56638116950817
+          ],[
+            114.27738189697266,
+            30.560468693004776
+          ]
+      ]
+    })
+   mapRef.current.addLayer(
+      {
+        id: 'overlay',
+        source: 'overlay',
+        type: 'raster',
+        paint: { 'raster-opacity': 0.85 }
+      },
+      // 'SpecialMap' + mapObj.current.floorBefore 图片显示到哪个layer前面
+    )
+  }
+  // 添加楼层剖面图数据 只有过南昌的 要注意数据格式
+  function addFloorData () {
+      // 剖面图对象
+      const ProfileMapObj = new ProfileMap(mapRef.current)
+      let i = 0
+      while (i < F1.features.length) {
+        ProfileMapObj.addMapLay(
+          F1.features[i],
+          'floor' + i,
+          // 'SpecialMap' + mapObj.current.floorBefore
+        )
+        i++
+      }
 
-  // 添加剖面图图片
-  // marker，div
+  }
+  // 添加marker，div
   // 路径规划
+    
   // 热力图
   // 蜂窝
   // d7
+  // 画圆、面
   /**
    * @description: 删除所有图层
    * @param {*}
@@ -193,13 +251,16 @@ export default function Mapbox() {
       item.remove()
     }
     stateObj.current.circleList = []
+    // 清除线
+    // 清除面
   }
   /**
-   * @description: 
+   * @description: 点击按钮要执行的代码
    * @param {*} type
    * @return {*}
    */  
   const btnOption = (type) => {
+    const map = mapRef.current
     switch (type) {
       case 1:
         const mockMarker = {
@@ -218,6 +279,20 @@ export default function Mapbox() {
       case 4:
         clearAll()
         break
+      case 5:
+        map.flyTo({
+          zoom: 16,
+          center: [114.298572, 30.584355],
+          speed: 2
+        })
+          break
+      case 6:
+        map.flyTo({
+          zoom: 16,
+          center: [115.7878042881879, 28.627611233044647],
+          speed: 2
+        })
+        break
     }
   }
   return <>  
@@ -226,6 +301,8 @@ export default function Mapbox() {
     <Button type="primary" onClick={()=>{btnOption(1)}}>点</Button>
     <Button type="primary" onClick={()=>{btnOption(2)}}>线</Button>
     <Button type="primary" onClick={()=>{btnOption(3)}}>面</Button>
+    <Button type="primary" onClick={()=>{btnOption(5)}}>武汉</Button>
+    <Button type="primary" onClick={()=>{btnOption(6)}}>南昌</Button>
     <Button type="primary" onClick={()=>{btnOption(4)}}>清除</Button>
 
   </div>
