@@ -1,16 +1,18 @@
 // Index/index.jsx
 import React from 'react'
 import {Button} from 'antd'
-// import { get } from '../utils'
-export default function Index() {
-  console.log('import.meta.env', import.meta.env)
-  // useEffect(() => {
-  //   get('/index-infos').then(() => {
 
-  //   })
-  // }, [])
+// import { history } from 'history'
+// import { get } from '../utils'
+export default function Index(props) {
+  console.log('import.meta.env', import.meta.env)
+  console.log(Route)
+  const go = () => {
+    console.log(props,'props')
+    // Route.push('/mapbox')
+  }
   return <div>
-    Index1
-    <Button type="primary">Button</Button>
+    地图演示
+    <Button type="primary" onClick={go}>Mapbox</Button>
   </div>
 }

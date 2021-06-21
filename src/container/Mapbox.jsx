@@ -46,7 +46,7 @@ export default function Mapbox() {
       },
       // center: [-74.5, 40], // starting position [lng, lat]
       center: [114.298572,30.584355], // 武汉 
-      zoom: 9, // starting zoom，
+      zoom: 13, // starting zoom，
       minZoom: 9,
       maxZoom: 16
     });
@@ -238,7 +238,6 @@ export default function Mapbox() {
     
   // 热力图
   // 蜂窝
-  // d7
   // 画圆、面
   /**
    * @description: 删除所有图层
