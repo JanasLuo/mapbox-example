@@ -11,6 +11,7 @@ import ProfileMap from '@/utils/profile_map.js'
 import SectionMap from '@/utils/sec.js'
 import trailStart from '@/assets/trail_start.svg'
 import trailEnd from '@/assets/trail_end.svg'
+import DrawMap from './component/addModal'
 
 export default function Mapbox() {
   const mapRef = useRef()
@@ -56,7 +57,7 @@ export default function Mapbox() {
     });
     mapRef.current.on('load', () => {
       mapLoaded()
-     
+      initDraw()
     })
   }
   const destory = () => {
@@ -262,19 +263,8 @@ export default function Mapbox() {
   }
   // 添加marker，div
   // 路径规划
-      // 显示轨迹 测试
+  // 显示轨迹 测试
   const showTrajectory = (data) => {
-    // console.log(data2, 'guiji')
-    // const data = JSON.parse(
-    //   JSON.stringify([
-    //     data2[0],
-    //     data2[1],
-    //     data2[1],
-    //     data2[2],
-    //     data2[3],
-    //     data2[1]
-    //   ])
-    // )
     // 添加轨迹
     const lineArr = data.map((item) => {
       return item.smx + ' ' + item.smy
@@ -361,9 +351,9 @@ export default function Mapbox() {
       // 保存marker 用于删除
       // mapObj.current.TrailList.push(marker)
     }
-  // 热力图
+  // 热力图 
   // 蜂窝
-  // 画圆、面
+  // 画圆、面组件
   /**
    * @description: 删除所有图层
    * @param {*}
@@ -428,7 +418,7 @@ export default function Mapbox() {
     <Button type="primary" onClick={()=>{btnOption(5)}}>武汉</Button>
     <Button type="primary" onClick={()=>{btnOption(6)}}>南昌</Button>
     <Button type="primary" onClick={()=>{btnOption(4)}}>清除</Button>
-
+    <DrawMap></DrawMap>
   </div>
   </>
 

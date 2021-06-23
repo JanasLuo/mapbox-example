@@ -1,7 +1,7 @@
 /*
  * @Date: 2021-04-23 10:10:35
  * @LastEditors: mark
- * @LastEditTime: 2021-04-27 10:33:20
+ * @LastEditTime: 2021-06-23 13:31:48
  * @Description: Do not edit
  */
 import { defineConfig } from 'vite'
@@ -34,6 +34,10 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       less: {
+        javascriptEnabled: true,
+        modifyVars: themeVariables
+      },
+      stylus: {
         javascriptEnabled: true,
         modifyVars: themeVariables
       }
