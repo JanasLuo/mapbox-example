@@ -42,7 +42,8 @@ const DrawMap = (props) => {
         sources: {
           'raster-tiles': {
             type: 'raster',
-            tiles: ['/darkblue_whhb/tiles/{z}/{x}/{y}.png'],
+            tiles: ['https://api.mapbox.com/styles/v1/mapbox/navigation-night-v1/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'],
+            // tiles: ['/darkblue_whhb/tiles/{z}/{x}/{y}.png'],
             tileSize: 256
           }
         },

@@ -30,13 +30,14 @@ export default function Mapbox() {
     mapRef.current = new mapboxgl.Map({
       container: 'map', // container ID
       // style: 'mapbox://styles/mapbox/streets-v11', // style URL
+      // style:'https://api.mapbox.com/styles/v1/mapbox/navigation-night-v1/tiles/{z}/{x}/{y}',
       style: {
         version: 8,
         glyphs: '/font/{fontstack}/{range}.pbf',
         sources: {
           'raster-tiles': {
             type: 'raster',
-            tiles: ['/darkblue_whhb/tiles/{z}/{x}/{y}.png'],
+            tiles: ['https://api.mapbox.com/styles/v1/mapbox/navigation-night-v1/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'],
             tileSize: 256
           }
         },
