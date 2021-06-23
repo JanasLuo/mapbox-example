@@ -1,8 +1,8 @@
 /*
  * @Date: 2021-06-23 12:41:51
  * @LastEditors: mark
- * @LastEditTime: 2021-06-23 15:15:31
- * @Description: Do not edit
+ * @LastEditTime: 2021-06-23 15:16:20
+ * @Description: 画多边形，并支持切换
  */
 import React, { useRef } from 'react'
 import { Modal } from 'antd'

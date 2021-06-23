@@ -19,6 +19,7 @@
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-router-dom": "^5.2.0",
+    "mapbox-gl-circle": "^1.6.5",
     "terraformer-wkt-parser": "^1.2.1"
   },
   "devDependencies": {

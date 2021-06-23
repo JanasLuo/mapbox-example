@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import mapboxgl from 'mapbox-gl';
 import * as ReactDOM from 'react-dom'
 import 'mapbox-gl/dist/mapbox-gl.css' // 必须使用 不然会有问题 比如marker位置不正确
@@ -18,6 +18,7 @@ export default function Mapbox() {
   const stateObj =  useRef({
     circleList:[]
   })
+  const [showDraw,setShowDraw] = useState(false)  // 是否显示画多边形
   useEffect(()=>{
     initMap()
     return destory
@@ -407,6 +408,9 @@ export default function Mapbox() {
           speed: 2
         })
         break
+      case 7:
+          setShowDraw(true)
+          break
     }
   }
   return <>  
@@ -416,9 +420,11 @@ export default function Mapbox() {
     <Button type="primary" onClick={()=>{btnOption(2)}}>线</Button>
     <Button type="primary" onClick={()=>{btnOption(3)}}>面</Button>
     <Button type="primary" onClick={()=>{btnOption(5)}}>武汉</Button>
-    <Button type="primary" onClick={()=>{btnOption(6)}}>南昌</Button>
+    <Button type="primary" onClick={()=>{btnOption(6)}}>南昌(显示楼层剖面图)</Button>
+    <Button type="primary" onClick={()=>{btnOption(7)}}>画多边形（支持切换）</Button>
     <Button type="primary" onClick={()=>{btnOption(4)}}>清除</Button>
-    <DrawMap></DrawMap>
+     {showDraw &&  <DrawMap closeThis={()=>{setShowDraw(false)}}></DrawMap>}
+   
   </div>
   </>
 
